@@ -1,0 +1,2 @@
+Hanging at ¡°POST git-receive-pack (chunked)¡±
+git config http.postBuffer 524288000

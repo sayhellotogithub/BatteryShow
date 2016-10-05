@@ -19,6 +19,7 @@ import com.iblogstreet.batteryshow.view.BatteryViewSelf;
 public class BatteryActivity
         extends Activity
 {
+    private static final String TAG ="BatteryActivity" ;
     private BatteryViewSelf mBatteryView;
 
     @Override
@@ -60,22 +61,20 @@ public class BatteryActivity
                 // BatteryManager.BATTERY_STATUS_NOT_CHARGING 未充电
                 // BatteryManager.BATTERY_STATUS_FULL 电池满
                 int status = intent.getIntExtra("status", 0); // 电池状态
-                Loger.e("Deom", "status" + status);
+                Loger.e(TAG, "status" + status);
                 //BatteryManager.BATTERY_STATUS_CHARGING;
                 int power = level * 100 / scale;
                 if (status == BatteryManager.BATTERY_STATUS_CHARGING) {
                     //充电中
-                    Loger.e("Deom", "充电中");
-                    mBatteryView.setPower(power);
+                    Loger.e(TAG, "充电中");
                     mBatteryView.setCharging(true);
+                    mBatteryView.setPower(power);
                 } else {
-                    Loger.e("Deom", "充电完成");
+                    Loger.e(TAG, "充电完成");
 
                     mBatteryView.setCharging(false);
                     mBatteryView.setPower(power);
                 }
-
-
             }
         }
     };

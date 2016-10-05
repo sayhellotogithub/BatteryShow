@@ -34,24 +34,18 @@ public class BatteryViewSelf
      */
     private int mPower = 100;
     /**
-     * 电池左边的距离
-     */
-    int battery_left = 0;
-
-    int battery_top    = 0;
-    /**
      * 电池的宽度
      */
-    int battery_width  = 25;
+    int mBatteryWidth  = 25;
     /**
      * 电池的高度
      */
-    int battery_height = 15;
+    int mBatteryHeight = 15;
 
     /**
      * 电池内边距
      */
-    int battery_inside_margin = 0;
+    int mBatteryInsideMargin = 0;
 
     Paint mBorderPaint;
     Paint mBatteryPaint;
@@ -59,7 +53,7 @@ public class BatteryViewSelf
     /**
      * 圆角距形的角度
      */
-    float bRadius;
+    float mRadius;
     /**
      *外部圆角距形
      */
@@ -94,11 +88,11 @@ public class BatteryViewSelf
         super(context, attrs, defStyleAttr);
         Loger.e(TAG, "BatteryViewSelf");
 
-        battery_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+        mBatteryWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                                                         80,
                                                         getContext().getResources()
                                                                     .getDisplayMetrics());
-        battery_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+        mBatteryHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                                                          30,
                                                          getContext().getResources()
                                                                      .getDisplayMetrics());
@@ -116,16 +110,16 @@ public class BatteryViewSelf
             int attr = a.getIndex(i);
             switch (attr) {
                 case R.styleable.BatteryView_bvRadius:
-                    bRadius = a.getFloat(attr, 9f);
+                    mRadius = a.getFloat(attr, 9f);
                     break;
                 case R.styleable.BatteryView_bvStrokeWidth:
                     mStrokeWidth = a.getDimension(attr, 2);
                     break;
                 case R.styleable.BatteryView_bvWidth:
-                    battery_width = a.getDimensionPixelSize(attr, battery_width);
+                    mBatteryWidth = a.getDimensionPixelSize(attr, mBatteryWidth);
                     break;
                 case R.styleable.BatteryView_bvHeight:
-                    battery_height = a.getDimensionPixelSize(attr, battery_height);
+                    mBatteryHeight = a.getDimensionPixelSize(attr, mBatteryHeight);
                     break;
                 case R.styleable.BatteryView_bvStrokeColor:
                     mStrokeColor = a.getColor(attr, Color.GREEN);
@@ -135,7 +129,7 @@ public class BatteryViewSelf
                     break;
 
                 case R.styleable.BatteryView_bvInsideMargin:
-                    battery_inside_margin = a.getDimensionPixelSize(attr, 0);
+                    mBatteryInsideMargin = a.getDimensionPixelSize(attr, 0);
                     break;
 
             }
@@ -197,18 +191,18 @@ public class BatteryViewSelf
         centerX = getMeasuredWidth() / 2;
         centerY = getMeasuredHeight() / 2;
         mBoardRF = new RectF();
-        mBoardRF.left = centerX - battery_width / 2;
-        mBoardRF.top = centerY - battery_height / 2;
-        mBoardRF.right = centerX + battery_width / 2;
-        mBoardRF.bottom = centerY + battery_height / 2;
+        mBoardRF.left = centerX - mBatteryWidth / 2;
+        mBoardRF.top = centerY - mBatteryHeight / 2;
+        mBoardRF.right = centerX + mBatteryWidth / 2;
+        mBoardRF.bottom = centerY + mBatteryHeight / 2;
 
 
         //画电池电量
 
-        mBleft = (int) (mBoardRF.left + battery_inside_margin + mStrokeWidth);
-        mBtop = (int) (mBoardRF.top + battery_inside_margin + mStrokeWidth);
-        mBright = (int) (mBoardRF.right - battery_inside_margin - mStrokeWidth); //p_left - battery_inside_margin + (int) ((battery_width - battery_inside_margin) * power_percent);
-        mBbottom = (int) (mBoardRF.bottom - battery_inside_margin - mStrokeWidth);//p_top + battery_height - battery_inside_margin * 2;
+        mBleft = (int) (mBoardRF.left + mBatteryInsideMargin + mStrokeWidth);
+        mBtop = (int) (mBoardRF.top + mBatteryInsideMargin + mStrokeWidth);
+        mBright = (int) (mBoardRF.right - mBatteryInsideMargin - mStrokeWidth);
+        mBbottom = (int) (mBoardRF.bottom - mBatteryInsideMargin - mStrokeWidth);
 
         mBatteryVolume = new Rect();
         mBatteryVolume.left = mBleft;
@@ -226,14 +220,14 @@ public class BatteryViewSelf
 
         if (modeWidth == MeasureSpec.AT_MOST || modeWidth == MeasureSpec.UNSPECIFIED) {
             sizeWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                                        battery_width,
+                                                        mBatteryWidth,
                                                         getContext().getResources()
                                                                     .getDisplayMetrics());
             sizeWidth += getPaddingLeft() + getPaddingRight();
         }
         if (modeHeight == MeasureSpec.AT_MOST || modeHeight == MeasureSpec.UNSPECIFIED) {
             sizeHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                                         battery_height,
+                                                         mBatteryHeight,
                                                          getContext().getResources()
                                                                      .getDisplayMetrics());
             sizeHeight += getPaddingBottom() + getPaddingTop();
@@ -251,21 +245,21 @@ public class BatteryViewSelf
         super.onDraw(canvas);
 
         //画边框
-        canvas.drawRoundRect(mBoardRF, bRadius, bRadius, mBorderPaint);
+        canvas.drawRoundRect(mBoardRF, mRadius, mRadius, mBorderPaint);
         float power_percent = mPower / 100.0f;
 
         //画电池电量
 
-        mBatteryVolume.right = (int) (mBatteryVolume.left + getDynamicVolume(battery_width * power_percent) - 2 * mStrokeWidth);
+        mBatteryVolume.right = (int) (mBatteryVolume.left + getDynamicVolume(mBatteryWidth * power_percent) - 2 * mStrokeWidth);
 
         Loger.e(TAG, "mBatteryVolume.right" + mBatteryVolume.right);
         canvas.drawRect(mBatteryVolume, mBatteryPaint);
 
         //画电池头
         canvas.drawRect(mBoardRF.right,
-                        centerY - battery_height / 4,
-                        mBoardRF.right + battery_width / 6,
-                        centerY + battery_height / 4,
+                        centerY - mBatteryHeight / 4,
+                        mBoardRF.right + mBatteryWidth / 6,
+                        centerY + mBatteryHeight / 4,
                         mBatteryHeaderPaint);
 
 
@@ -287,7 +281,7 @@ public class BatteryViewSelf
         } else {
             mAutoIncrementWidth = 0;
         }
-        if (mAutoIncrementWidth >= (battery_width - mWidth - mStrokeWidth)) {
+        if (mAutoIncrementWidth >= (mBatteryWidth - mWidth - mStrokeWidth)) {
             mAutoIncrementWidth = 0;
         }
         // Loger.e(TAG,"getDynamicVolume"+mAutoIncrementWidth+"mBright"+mBright+"mBright*power_percent"+(mBright*power_percent));
