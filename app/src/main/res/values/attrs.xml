@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BatteryView">
+        <!--画圆角 -->
+        <attr name="bvRadius" format="float"/>
+        <attr name="bvWidth" format="dimension"/>
+        <attr name="bvHeight" format="dimension"/>
+        <attr name="bvStrokeWidth" format="dimension" />
+        <attr name="bvStrokeColor" format="color"/>
+        <attr name="bvColor" format="color"/>
+        <attr name="bvInsideMargin" format="dimension"/>
+        </declare-styleable>
+    
+</resources>
