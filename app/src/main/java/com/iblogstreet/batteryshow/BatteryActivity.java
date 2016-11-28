@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.iblogstreet.batteryshow.utils.Loger;
 import com.iblogstreet.batteryshow.view.BatteryViewSelf;
@@ -35,6 +37,12 @@ public class BatteryActivity
         super.onResume();
         register();
     }
+
+    public void showMsg(View view){
+        Toast.makeText(this,"showmsg",Toast.LENGTH_SHORT).show();
+    }
+
+
 
     @Override
     protected void onPause() {

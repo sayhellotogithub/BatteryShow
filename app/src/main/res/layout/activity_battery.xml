@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical">
 
     <com.iblogstreet.batteryshow.view.BatteryViewSelf
-        android:layout_margin="10dp"
-        app:bvRadius="5"
-        app:bvWidth="80dp"
-        app:bvHeight="40dp"
-        app:bvStrokeWidth="2dp"
-        app:bvStrokeColor="#fff"
-        app:bvColor="@android:color/holo_green_light"
-        app:bvInsideMargin="0dp"
         android:id="@+id/battery_view"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:background="#000"
-        android:layout_height="wrap_content" />
+        app:bvColor="@android:color/holo_green_light"
+        app:bvHeight="40dp"
+        app:bvInsideMargin="0dp"
+        app:bvRadius="5"
+        app:bvStrokeColor="#fff"
+        app:bvStrokeWidth="2dp"
+        app:bvWidth="80dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showMsg"
+        android:text="showMsg"/>
 
 </LinearLayout>

@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -51,6 +50,19 @@ public class BatteryViewSelf
     Paint mBatteryPaint;
     private Paint mBatteryHeaderPaint;
     /**
+     * 电池更新的时间间隔
+     */
+    private int mInterval        = 1000;
+    /**
+     * 充电时的颜色
+     */
+    private int mChargingColor   = Color.GREEN;
+    /**
+     * 低电量的颜色
+     */
+    private int mLowBatteryColor = Color.RED;
+
+    /**
      * 圆角距形的角度
      */
     float mRadius;
@@ -60,6 +72,8 @@ public class BatteryViewSelf
     private RectF mBoardRF;
 
     private float mStrokeWidth;
+
+    int mAutoIncrementWidth = 0;
 
     public boolean isCharging() {
         return isCharging;
@@ -73,6 +87,8 @@ public class BatteryViewSelf
      * 正在充电中
      */
     private boolean isCharging = false;
+
+    private boolean mLastStatus = false;
 
     public BatteryViewSelf(Context context) {
         this(context, null);
@@ -136,9 +152,7 @@ public class BatteryViewSelf
 
         }
         a.recycle();
-
         Loger.e(TAG, "mStroke1" + mStrokeWidth);
-        //initPaint();
     }
 
     void initPaint() {
@@ -265,10 +279,6 @@ public class BatteryViewSelf
 
     }
 
-    /**
-     *
-     */
-    int mAutoIncrementWidth = 0;
 
     /**
      *
@@ -288,20 +298,20 @@ public class BatteryViewSelf
         return (int) (mWidth + mAutoIncrementWidth);
     }
 
-
     /**
      * 充电
      */
     void chargingPower() {
-        post(new Runnable() {
+
+        postDelayed(new Runnable() {
             @Override
             public void run() {
-                SystemClock.sleep(40);
+
                 postInvalidate();
                 if (isCharging) { chargingPower(); }
                 Loger.e(TAG, "chargingPower");
             }
-        });
+        }, mInterval);
     }
 
 
@@ -311,8 +321,15 @@ public class BatteryViewSelf
         if (mPower < 0) {
             mPower = 0;
         }
-        if (isCharging) { chargingPower(); } else {
+        if (isCharging) {
+            //增加状态控制
+            if (!mLastStatus) {
+                mLastStatus = isCharging;
+                chargingPower();
+            }
+        } else {
             Loger.e(TAG, "invalidate");
+            mLastStatus = false;
             invalidate();
         }
     }
@@ -320,7 +337,7 @@ public class BatteryViewSelf
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        //mHandler.removeCallbacksAndMessages(null);
         isCharging = false;
+        mLastStatus = false;
     }
 }
